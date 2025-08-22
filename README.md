@@ -4,7 +4,8 @@
 
 ## Usage
 
-- right click on any file/folder in your workspace to copy its path hierarchy ex.`vendor/some/deeply/nested/dir` or `vendor/some/deeply/nested/dir/file.ext`
-- right click on any folder to create the path hierarchy ex.`./src`
-    - either create it exactly as copied ex. `./src/vendor/some/deeply/nested/dir`
-    - or create it without the top-most directory ex. `./src/some/deeply/nested/dir`
+- Right click on any file/folder in your workspace to copy its path hierarchy ex.`vendor/some/deeply/nested/dir` or `vendor/some/deeply/nested/dir/file.ext`
+- Right click on any folder to create the path hierarchy ex.`./src`
+    - You'll be presented with a quick pick dialog showing all path segments
+    - Uncheck any segments you don't want to include in the final path
+    - The folder structure will be created based on your selections

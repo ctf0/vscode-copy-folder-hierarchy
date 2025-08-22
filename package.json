@@ -2,7 +2,7 @@
     "name": "copy-folder-hierarchy",
     "displayName": "Copy Folder Hierarchy",
     "description": "easily replicate a folder structure in your workspace",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "publisher": "ctf0",
     "repository": "https://github.com/ctf0/vscode-copy-folder-hierarchy",
     "engines": {
@@ -26,11 +26,6 @@
                 "command": "cfh.create_copied_hierarchy",
                 "title": "Create Folder Hierarchy",
                 "category": "Copy Folder Hierarchy"
-            },
-            {
-                "command": "cfh.create_copied_hierarchy_without_top_most_dir",
-                "title": "Create Folder Hierarchy (without top-most dir)",
-                "category": "Copy Folder Hierarchy"
             }
         ],
         "submenus": [
@@ -47,10 +42,6 @@
                 },
                 {
                     "command": "cfh.create_copied_hierarchy",
-                    "when": "false"
-                },
-                {
-                    "command": "cfh.create_copied_hierarchy_without_top_most_dir",
                     "when": "false"
                 }
             ],
@@ -69,11 +60,6 @@
                 {
                     "command": "cfh.create_copied_hierarchy",
                     "group": "cfh@2",
-                    "when": "explorerResourceIsFolder && cfh.copiedFolderHierarchyPath"
-                },
-                {
-                    "command": "cfh.create_copied_hierarchy_without_top_most_dir",
-                    "group": "cfh@3",
                     "when": "explorerResourceIsFolder && cfh.copiedFolderHierarchyPath"
                 }
             ]

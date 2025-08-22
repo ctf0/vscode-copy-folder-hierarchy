@@ -4,7 +4,6 @@ import * as vscode from 'vscode'
 import * as utils from './utils'
 
 export async function copyFolderHierarchy(uri: vscode.Uri, context: vscode.ExtensionContext): Promise<void> {
-    console.log('🚀🚀🚀 ~ Commands.ts:7 ~ copyFolderHierarchy ~ uri:', uri)
     let folder = ''
 
     if (path.extname(uri.fsPath)) {
@@ -42,42 +41,42 @@ export async function createFolderHierarchy(targetUri: vscode.Uri, context: vsco
             return
         }
 
-        const destPath = path.join(targetUri.fsPath, rel)
-        await fs.ensureDir(destPath)
+        const pathSegments = rel.split(path.sep).filter(Boolean)
 
-        const destUri = vscode.Uri.file(destPath)
-        await vscode.commands.executeCommand('revealInExplorer', destUri)
-        folderCreatedMsg(destUri)
-        // await utils.setContext(false)
-    } catch (error: any) {
-        utils.showMessage(error?.message ?? 'Failed to create folder hierarchy')
-    }
-}
+        const selectedSegments = await vscode.window.showQuickPick(
+            pathSegments.map((segment) => ({
+                label: segment,
+                picked: true,
+            })),
+            {
+                canPickMany: true,
+                placeHolder: 'Select which folder segments to include in the hierarchy (uncheck to exclude)',
+                ignoreFocusOut: true,
+            },
+        )
 
-export async function createFolderHierarchyWithoutTopMostDir(targetUri: vscode.Uri, context: vscode.ExtensionContext): Promise<void> {
-    try {
-        const rel: string = context.globalState.get(utils.PACKAGE_CONTEXT) as string || ''
-
-        const parts = rel.split(path.sep).filter(Boolean)
-
-        if (parts.length <= 1) {
-            utils.showMessage('Nothing to create: copied path has no subdirectories')
+        if (!selectedSegments) {
             return
         }
 
-        const subPath = path.join(...parts.slice(1))
-        const destPath = path.join(targetUri.fsPath, subPath)
+        const selectedPaths = selectedSegments
+            .filter((item) => item.picked)
+            .map((item) => item.label)
+
+        if (selectedPaths.length === 0) {
+            utils.showMessage('No folder segments selected. Operation cancelled.')
+            return
+        }
+
+        const finalPath = selectedPaths.join(path.sep)
+        const destPath = path.join(targetUri.fsPath, finalPath)
         await fs.ensureDir(destPath)
 
         const destUri = vscode.Uri.file(destPath)
         await vscode.commands.executeCommand('revealInExplorer', destUri)
-        folderCreatedMsg(destUri)
+        utils.showMessage(`created "${vscode.workspace.asRelativePath(destUri, false)}"`, false)
         // await utils.setContext(false)
     } catch (error: any) {
         utils.showMessage(error?.message ?? 'Failed to create folder hierarchy')
     }
-}
-
-function folderCreatedMsg(destUri: vscode.Uri): void {
-    utils.showMessage(`created "${vscode.workspace.asRelativePath(destUri, false)}"`, false)
 }

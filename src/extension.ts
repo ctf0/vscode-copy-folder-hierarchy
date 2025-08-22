@@ -18,11 +18,6 @@ export async function activate(context: vscode.ExtensionContext) {
             `${utils.PACKAGE_CMND_NAME}.create_copied_hierarchy`,
             async(uri: vscode.Uri) => await cmnds.createFolderHierarchy(uri, context),
         ),
-
-        vscode.commands.registerCommand(
-            `${utils.PACKAGE_CMND_NAME}.create_copied_hierarchy_without_top_most_dir`,
-            async(uri: vscode.Uri) => await cmnds.createFolderHierarchyWithoutTopMostDir(uri, context),
-        ),
     )
 }
 
